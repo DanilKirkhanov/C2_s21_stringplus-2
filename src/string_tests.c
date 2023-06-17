@@ -139,9 +139,74 @@ START_TEST(memmove_test) {
   char testSThree[50] = "Hello Moto";
   char testSFour[50] = "Hello Moto";
   ck_assert_pstr_eq(s21_memmove(testSThree + 4, testSThree, 10), memmove(testSFour + 4, testSFour, 10));
+  ck_assert_pstr_eq(s21_memmove(testSThree + 10, testSThree, 10), memmove(testSFour + 10, testSFour, 10));
+
+  char testSFive[] = "Hello Moto\n\0";
+  char testSSix[] = "Hello Moto\n\0";
+  char random[] = "Patrick Ba\n\0";
+  char randomOne[] = "12345678910111213";
+  ck_assert_pstr_eq(s21_memmove(testSFive, random, 13), memmove(testSSix, random, 13));
+  ck_assert_pstr_eq(s21_memmove(testSFive, randomOne, 5), memmove(testSSix, randomOne, 5));
+
+  char testSEight[] = "\0";
+  char randomTwo[] = "\0";
+  ck_assert_pstr_eq(s21_memmove(testSEight, randomTwo, 2), memmove(testSEight, randomTwo, 2));
+}
+
+START_TEST(memset_test) {
+  char tOne[] = "Patrick Bateman\n\0";
+  char tTwo[] = "Patrick Bateman\n\0";
+
+  ck_assert_pstr_eq(s21_memset(tOne, '*', 8), memset(tTwo, '*', 8));
+  ck_assert_pstr_eq(s21_memset(tOne, '-', 8), memset(tTwo, '-', 8));
+  ck_assert_pstr_eq(s21_memset(tOne, '|', 8), memset(tTwo, '|', 8));
+
+  char tThree[] = "Patrick420\0";
+  char tFour[] = "Patrick420\0";
+
+  ck_assert_pstr_eq(s21_memset(tThree, '*', 8), memset(tFour, '*', 8));
+  ck_assert_pstr_eq(s21_memset(tThree, '-', 8), memset(tFour, '-', 8));
+  ck_assert_pstr_eq(s21_memset(tThree, '|', 8), memset(tFour, '|', 8));
+
+  char tFive[] = " \n\0";
+  char tSix[] = " \n\0";
+
+  ck_assert_pstr_eq(s21_memset(tFive, '*', 1), memset(tSix, '*', 1));
+  ck_assert_pstr_eq(s21_memset(tFive, '-', 1), memset(tSix, '-', 1));
+  ck_assert_pstr_eq(s21_memset(tFive, '|', 1), memset(tSix, '|', 1));
+
+  char tSeven[] = "1\n\0";
+  char tEight[] = "1\n\0";
+
+  ck_assert_pstr_eq(s21_memset(tSeven, '*', 2), memset(tEight, '*', 2));
+  ck_assert_pstr_eq(s21_memset(tSeven, '-', 2), memset(tEight, '-', 2));
+  ck_assert_pstr_eq(s21_memset(tSeven, '|', 2), memset(tEight, '|', 2));
+
+  char tNine[] = "\n\0";
+  char tTen[] = "\n\0";
+
+  ck_assert_pstr_eq(s21_memset(tNine, '*', 2), memset(tTen, '*', 2));
+  ck_assert_pstr_eq(s21_memset(tNine, '-', 2), memset(tTen, '-', 2));
+  ck_assert_pstr_eq(s21_memset(tNine, '|', 2), memset(tTen, '|', 2));
+
+  char tEl[] = "\0";
+  char tTwe[] = "\0";
+  
+  ck_assert_pstr_eq(s21_memset(tEl, '*', 1), memset(tTwe, '*', 1));
+  ck_assert_pstr_eq(s21_memset(tEl, '-', 1), memset(tTwe, '-', 1));
+  ck_assert_pstr_eq(s21_memset(tEl, '|', 1), memset(tTwe, '|', 1));
+
+  char whatevsOne[22] = "home sweet home 10 12";
+  char whatevsTwo[15] = "home sour home";
+  
+  ck_assert_pstr_eq(s21_memset(whatevsOne, '1', 15), memset(whatevsOne, '1', 15));
+  ck_assert_pstr_eq(s21_memset(whatevsOne, '\0', 15), memset(whatevsOne, '\0', 15));
+  ck_assert_pstr_eq(s21_memset(whatevsTwo, '1', 14), memset(whatevsTwo, '1', 14));
+  ck_assert_pstr_eq(s21_memset(whatevsTwo, '\0', 14), memset(whatevsTwo, '\0', 14));
 }
 
 int main() {
+  // runner init
   int no_failed = 0;
   Suite *s = suite_create("StrT");
   SRunner *runner = srunner_create(s);
@@ -169,6 +234,12 @@ int main() {
   tc_memmove = tcase_create("memmove test");
   suite_add_tcase(s, tc_memmove);
   tcase_add_test(tc_memmove, memmove_test);
+
+  // memset
+  TCase *tc_memset;
+  tc_memset = tcase_create("memset test");
+  suite_add_tcase(s, tc_memset);
+  tcase_add_test(tc_memset, memset_test);
 
   // runner
   srunner_run_all(runner, CK_NORMAL);

@@ -6,8 +6,8 @@ coverFlag =--coverage
 
 all: tests 
 
-tests: s21_memchr.o s21_memcpy.o s21_memcmp.o string_tests.o s21_memmove.o
-	$(compile) $(flags) $(12) $(coverFlag) s21_memchr.o s21_memcpy.o s21_memcmp.o s21_memmove.o string_tests.o -o test
+tests: s21_memchr.o s21_memcpy.o s21_memcmp.o string_tests.o s21_memmove.o s21_memset.o
+	$(compile) $(flags) $(12) $(coverFlag) s21_memchr.o s21_memcpy.o s21_memcmp.o s21_memmove.o s21_memset.o string_tests.o -o test
 
 s21_memchr.o: s21_memchr.c
 	$(compile) -c $(flags) $(coverFlag) s21_memchr.c -o s21_memchr.o
@@ -20,6 +20,9 @@ s21_memcmp.o: s21_memcmp.c
 
 s21_memmove.o: s21_memmove.c
 	$(compile) -c $(flags) $(coverFlag) s21_memmove.c -o s21_memmove.o
+
+s21_memset.o: s21_memset.c
+	$(compile) -c $(flags) $(coverFlag) s21_memset.c -o s21_memset.o
 
 string_tests.o: string_tests.c
 	$(compile) -c $(flags) string_tests.c -o string_tests.o
