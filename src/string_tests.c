@@ -64,6 +64,7 @@ START_TEST(memcpy_test) {
   ck_assert_str_eq(s21_memcpy(dSeven, sTwo, 15), memcpy(origSeven, sTwo, 15));
   ck_assert_str_eq(s21_memcpy(dEight, sTwo, 15), memcpy(origEight, sTwo, 15));
 }
+END_TEST
 
 START_TEST(memcmp_test) {
   char sOne[10] = "HELLO";
@@ -102,6 +103,7 @@ START_TEST(memcmp_test) {
   ck_assert_int_eq(s21_memcmp(testSix, testSeven, 10),
                    memcmp(testSix, testSeven, 10));
 }
+END_TEST
 
 START_TEST(memmove_test) {
   char sOne[10] = "alabama123";
@@ -134,24 +136,33 @@ START_TEST(memmove_test) {
 
   char testSOne[50] = "Understandable, have a nice day";
   char testSTwo[50] = "Understandable, have a nice day";
-  ck_assert_pstr_eq(s21_memmove(&testSOne[4], testSOne, 31), memmove(&testSTwo[4], testSTwo, 31));
+  ck_assert_pstr_eq(s21_memmove(&testSOne[4], testSOne, 31),
+                    memmove(&testSTwo[4], testSTwo, 31));
 
   char testSThree[50] = "Hello Moto";
   char testSFour[50] = "Hello Moto";
-  ck_assert_pstr_eq(s21_memmove(testSThree + 4, testSThree, 10), memmove(testSFour + 4, testSFour, 10));
-  ck_assert_pstr_eq(s21_memmove(testSThree + 10, testSThree, 10), memmove(testSFour + 10, testSFour, 10));
+  ck_assert_pstr_eq(s21_memmove(testSThree + 4, testSThree, 10),
+                    memmove(testSFour + 4, testSFour, 10));
+  ck_assert_pstr_eq(s21_memmove(testSThree + 10, testSThree, 10),
+                    memmove(testSFour + 10, testSFour, 10));
 
   char testSFive[] = "Hello Moto\n\0";
   char testSSix[] = "Hello Moto\n\0";
   char random[] = "Patrick Ba\n\0";
   char randomOne[] = "12345678910111213";
-  ck_assert_pstr_eq(s21_memmove(testSFive, random, 13), memmove(testSSix, random, 13));
-  ck_assert_pstr_eq(s21_memmove(testSFive, randomOne, 5), memmove(testSSix, randomOne, 5));
+  ck_assert_pstr_eq(s21_memmove(testSFive, random, 13),
+                    memmove(testSSix, random, 13));
+  ck_assert_pstr_eq(s21_memmove(testSFive, randomOne, 5),
+                    memmove(testSSix, randomOne, 5));
 
   char testSEight[] = "\0";
   char randomTwo[] = "\0";
-  ck_assert_pstr_eq(s21_memmove(testSEight, randomTwo, 2), memmove(testSEight, randomTwo, 2));
+  ck_assert_pstr_eq(s21_memmove(testSEight, randomTwo, 2),
+                    memmove(testSEight, randomTwo, 2));
+  ck_assert_pstr_eq(s21_memmove(testSEight, randomTwo, 0),
+                    memmove(testSEight, randomTwo, 0));
 }
+END_TEST
 
 START_TEST(memset_test) {
   char tOne[] = "Patrick Bateman\n\0";
@@ -191,19 +202,82 @@ START_TEST(memset_test) {
 
   char tEl[] = "\0";
   char tTwe[] = "\0";
-  
+
   ck_assert_pstr_eq(s21_memset(tEl, '*', 1), memset(tTwe, '*', 1));
   ck_assert_pstr_eq(s21_memset(tEl, '-', 1), memset(tTwe, '-', 1));
   ck_assert_pstr_eq(s21_memset(tEl, '|', 1), memset(tTwe, '|', 1));
+  // ck_assert_pstr_eq(s21_memset(tEl, '*', 2), memset(tTwe, '*', 2));
+  ck_assert_pstr_eq(s21_memset(tEl, '|', 0), memset(tTwe, '|', 0));
 
   char whatevsOne[22] = "home sweet home 10 12";
   char whatevsTwo[15] = "home sour home";
-  
-  ck_assert_pstr_eq(s21_memset(whatevsOne, '1', 15), memset(whatevsOne, '1', 15));
-  ck_assert_pstr_eq(s21_memset(whatevsOne, '\0', 15), memset(whatevsOne, '\0', 15));
-  ck_assert_pstr_eq(s21_memset(whatevsTwo, '1', 14), memset(whatevsTwo, '1', 14));
-  ck_assert_pstr_eq(s21_memset(whatevsTwo, '\0', 14), memset(whatevsTwo, '\0', 14));
+
+  ck_assert_pstr_eq(s21_memset(whatevsOne, '1', 15),
+                    memset(whatevsOne, '1', 15));
+  ck_assert_pstr_eq(s21_memset(whatevsOne, '\0', 15),
+                    memset(whatevsOne, '\0', 15));
+  ck_assert_pstr_eq(s21_memset(whatevsTwo, '1', 14),
+                    memset(whatevsTwo, '1', 14));
+  ck_assert_pstr_eq(s21_memset(whatevsTwo, '\0', 14),
+                    memset(whatevsTwo, '\0', 14));
 }
+END_TEST
+
+START_TEST(strcat_test) {
+  char t[100] = "Hi, my name is Van, I'm an artist.\0";
+  char tOne[100] = "Hi, my name is Van, I'm an artist.\0";
+  char string[25] = "I'm a perfomance artist\0";
+
+  ck_assert_pstr_eq(s21_strcat(t, string), strcat(tOne, string));
+
+  char tTwo[100] = "I'm hired to fulfill their fantasies.\0";
+  char tThree[100] = "I'm hired to fulfill their fantasies.\0";
+  char stringTwo[28] = "Their deep dark fantasies.\0";
+
+  ck_assert_pstr_eq(s21_strcat(tTwo, stringTwo), strcat(tThree, stringTwo));
+
+  char tFour[100] = "I was gonna be a movie star y'know,\n\0";
+  char tFive[100] = "I was gonna be a movie star y'know,\n\0";
+  char stringThree[23] = "modeling and acting.\n\0";
+  char stringFour[37] = "I was gonna be a movie star y'know\n\0";
+
+  ck_assert_pstr_eq(s21_strcat(tFour, stringThree), strcat(tFive, stringThree));
+  ck_assert_pstr_eq(s21_strcat(tFour, stringFour), strcat(tFive, stringFour));
+
+  char tSix[50] = " \n\0";
+  char tSeven[50] = " \n\0";
+  char stringFive[50] = " \n\0";
+
+  ck_assert_pstr_eq(s21_strcat(tSix, stringFive), strcat(tSeven, stringFive));
+
+  char tEight[50] = "\n\0";
+  char tNine[50] = "\n\0";
+  char stringSix[50] = "\n\0";
+
+  ck_assert_pstr_eq(s21_strcat(tEight, stringSix), strcat(tNine, stringSix));
+
+  char tTen[50] = "\0";
+  char tEl[50] = "\0";
+  char stringSeven[50] = "\0";
+
+  ck_assert_pstr_eq(s21_strcat(tTen, stringSeven), strcat(tEl, stringSeven));
+
+  char forEmpty[260] =
+      "After a hundred and two auditions and small parts I decided y'know I "
+      "had enough, Then I got in to Escort world.";
+  char forEmptyOne[260] =
+      "After a hundred and two auditions and small parts I decided y'know I "
+      "had enough, Then I got in to Escort world.";
+  char random[2] = " ";
+  char randomOne[145] =
+      "The client requests contain a lot of fetishes, so I just decided to go "
+      "y'know... full ♂Master♂ and change my entire house into a dungeon...";
+
+  ck_assert_pstr_eq(s21_strcat(forEmpty, random), strcat(forEmptyOne, random));
+  ck_assert_pstr_eq(s21_strcat(forEmpty, randomOne),
+                    strcat(forEmptyOne, randomOne));
+}
+END_TEST
 
 int main() {
   // runner init
@@ -240,6 +314,12 @@ int main() {
   tc_memset = tcase_create("memset test");
   suite_add_tcase(s, tc_memset);
   tcase_add_test(tc_memset, memset_test);
+
+  // strcat
+  TCase *tc_strcat;
+  tc_strcat = tcase_create("strcat test");
+  suite_add_tcase(s, tc_strcat);
+  tcase_add_test(tc_strcat, strcat_test);
 
   // runner
   srunner_run_all(runner, CK_NORMAL);
