@@ -258,7 +258,7 @@ START_TEST(strcat_test) {
 
   char tTen[50] = "\0";
   char tEl[50] = "\0";
-  char stringSeven[50] = "\0";
+  char stringSeven[2] = "\0";
 
   ck_assert_pstr_eq(s21_strcat(tTen, stringSeven), strcat(tEl, stringSeven));
 
@@ -278,6 +278,77 @@ START_TEST(strcat_test) {
                     strcat(forEmptyOne, randomOne));
 }
 END_TEST
+
+START_TEST(strncat_test) {
+  // char possOverlap[] = "This is a string\0XXX";
+  // char possOverlap1[] = "This is a string\0XXX";
+  // ck_assert_pstr_eq(s21_strncat(possOverlap, possOverlap + 1, 10),
+  // strncat(possOverlap1, possOverlap1 + 1, 10));
+
+  char t[100] = "Hi, my name is Van, I'm an artist.\0";
+  char tOne[100] = "Hi, my name is Van, I'm an artist.\0";
+  char string[25] = "I'm a perfomance artist\0";
+
+  ck_assert_pstr_eq(s21_strncat(t, string, 25), strncat(tOne, string, 25));
+
+  char tTwo[100] = "I'm hired to fulfill their fantasies.\0";
+  char tThree[100] = "I'm hired to fulfill their fantasies.\0";
+  char stringTwo[28] = "Their deep dark fantasies.\0";
+
+  ck_assert_pstr_eq(s21_strncat(tTwo, stringTwo, 28),
+                    strncat(tThree, stringTwo, 28));
+
+  char tFour[100] = "I was gonna be a movie star y'know,\n\0";
+  char tFive[100] = "I was gonna be a movie star y'know,\n\0";
+  char stringThree[23] = "modeling and acting.\n\0";
+  char stringFour[37] = "I was gonna be a movie star y'know\n\0";
+
+  ck_assert_pstr_eq(s21_strncat(tFour, stringThree, 23),
+                    strncat(tFive, stringThree, 23));
+  ck_assert_pstr_eq(s21_strncat(tFour, stringFour, 37),
+                    strncat(tFive, stringFour, 37));
+
+  char tSix[50] = " \n\0";
+  char tSeven[50] = " \n\0";
+  char stringFive[] = " \n\0";
+
+  ck_assert_pstr_eq(s21_strncat(tSix, stringFive, 4),
+                    strncat(tSeven, stringFive, 4));
+
+  char tEight[50] = "\n\0";
+  char tNine[50] = "\n\0";
+  char stringSix[50] = "\n\0";
+
+  ck_assert_pstr_eq(s21_strncat(tEight, stringSix, 4),
+                    strncat(tNine, stringSix, 4));
+
+  char tTen[50] = "\0";
+  char tEl[50] = "\0";
+  char stringSeven[2] = "\0";
+
+  ck_assert_pstr_eq(s21_strncat(tTen, stringSeven, 2),
+                    strncat(tEl, stringSeven, 2));
+
+  char forEmpty[260] =
+      "After a hundred and two auditions and small parts I decided y'know I "
+      "had enough, Then I got in to Escort world.";
+  char forEmptyOne[260] =
+      "After a hundred and two auditions and small parts I decided y'know I "
+      "had enough, Then I got in to Escort world.";
+  char random[2] = " ";
+  char randomOne[145] =
+      "The client requests contain a lot of fetishes, so I just decided to go "
+      "y'know... full ♂Master♂ and change my entire house into a dungeon...";
+
+  ck_assert_pstr_eq(s21_strncat(forEmpty, random, 2),
+                    strncat(forEmptyOne, random, 2));
+  ck_assert_pstr_eq(s21_strncat(forEmpty, randomOne, 144),
+                    strncat(forEmptyOne, randomOne, 144));
+
+  // char Alabama[] = "My name is Patrick Bateman. I'm 27 years old.";
+  // ck_assert_pstr_eq(s21_strncat(Alabama, Alabama, 44), strncat(Alabama,
+  // Alabama, 44));
+}
 
 int main() {
   // runner init
@@ -321,8 +392,14 @@ int main() {
   suite_add_tcase(s, tc_strcat);
   tcase_add_test(tc_strcat, strcat_test);
 
+  // strncat
+  TCase *tc_strncat;
+  tc_strncat = tcase_create("strncat test");
+  suite_add_tcase(s, tc_strncat);
+  tcase_add_test(tc_strncat, strncat_test);
+
   // runner
-  srunner_run_all(runner, CK_NORMAL);
+  srunner_run_all(runner, CK_VERBOSE);
   no_failed = srunner_ntests_failed(runner);
   srunner_free(runner);
   return (no_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
