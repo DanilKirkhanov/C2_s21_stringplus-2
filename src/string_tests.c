@@ -329,26 +329,291 @@ START_TEST(strncat_test) {
   ck_assert_pstr_eq(s21_strncat(tTen, stringSeven, 2),
                     strncat(tEl, stringSeven, 2));
 
-  char forEmpty[260] =
-      "After a hundred and two auditions and small parts I decided y'know I "
-      "had enough, Then I got in to Escort world.";
-  char forEmptyOne[260] =
-      "After a hundred and two auditions and small parts I decided y'know I "
-      "had enough, Then I got in to Escort world.";
-  char random[2] = " ";
-  char randomOne[145] =
-      "The client requests contain a lot of fetishes, so I just decided to go "
-      "y'know... full ♂Master♂ and change my entire house into a dungeon...";
+  char forEmpty[700] =
+      "♂Dungeon♂Master♂ now with a full dungeon in my house and It's going "
+      "really well. ";
+  char forEmptyOne[700] =
+      "♂Dungeon♂Master♂ now with a full dungeon in my house and It's going "
+      "really well. ";
+  char random[168] =
+      "Fisting is 300 bucks and usually the guy is pretty much hard on pop to "
+      "get really relaxed y'know and I have this long latex glove that goes "
+      "all the way up to my armpit";
+  char randomOne[90] =
+      "and it's a long process y'know to get your whole arm up there but it's "
+      "an intense feeling";
 
-  ck_assert_pstr_eq(s21_strncat(forEmpty, random, 2),
-                    strncat(forEmptyOne, random, 2));
-  ck_assert_pstr_eq(s21_strncat(forEmpty, randomOne, 144),
-                    strncat(forEmptyOne, randomOne, 144));
+  ck_assert_pstr_eq(s21_strncat(forEmpty, random, 168),
+                    strncat(forEmptyOne, random, 168));
+  ck_assert_pstr_eq(s21_strncat(forEmpty, randomOne, 90),
+                    strncat(forEmptyOne, randomOne, 90));
 
   // char Alabama[] = "My name is Patrick Bateman. I'm 27 years old.";
   // ck_assert_pstr_eq(s21_strncat(Alabama, Alabama, 44), strncat(Alabama,
   // Alabama, 44));
 }
+
+START_TEST(strchr_test) {
+  char source[] = "for the other person I think for myself too";
+  ck_assert_pstr_eq(s21_strchr(source, 12), strchr(source, 12));
+  ck_assert_pstr_eq(s21_strchr(source, 'o'), strchr(source, 'o'));
+  ck_assert_pstr_eq(s21_strchr(source, '\0'), strchr(source, '\0'));
+  ck_assert_pstr_eq(s21_strchr(source, 'I'), strchr(source, 'I'));
+  ck_assert_pstr_eq(s21_strchr(source, 'f'), strchr(source, 'f'));
+  ck_assert_pstr_eq(s21_strchr(source, 'q'), strchr(source, 'q'));
+
+  char sourceT[] = " \n\0";
+  ck_assert_pstr_eq(s21_strchr(sourceT, 3), strchr(sourceT, 3));
+  ck_assert_pstr_eq(s21_strchr(sourceT, '\0'), strchr(sourceT, '\0'));
+  ck_assert_pstr_eq(s21_strchr(sourceT, ' '), strchr(sourceT, ' '));
+  ck_assert_pstr_eq(s21_strchr(sourceT, '\n'), strchr(sourceT, '\n'));
+
+  char sourceY[] = "\0";
+  ck_assert_pstr_eq(s21_strchr(sourceY, 1), strchr(sourceY, 1));
+  ck_assert_pstr_eq(s21_strchr(sourceY, '\0'), strchr(sourceY, '\0'));
+}
+
+START_TEST(strrchr_test) {
+  char source[] =
+      "you go in places that even though it's physical with your hand";
+  ck_assert_pstr_eq(s21_strrchr(source, 12), strrchr(source, 12));
+  ck_assert_pstr_eq(s21_strrchr(source, 'h'), strrchr(source, 'h'));
+  ck_assert_pstr_eq(s21_strrchr(source, '\0'), strrchr(source, '\0'));
+  ck_assert_pstr_eq(s21_strrchr(source, 'i'), strrchr(source, 'i'));
+  ck_assert_pstr_eq(s21_strrchr(source, 'p'), strrchr(source, 'p'));
+  ck_assert_pstr_eq(s21_strrchr(source, 'q'), strrchr(source, 'q'));
+
+  char sourceT[] = " \n\0";
+  ck_assert_pstr_eq(s21_strrchr(sourceT, 3), strrchr(sourceT, 3));
+  ck_assert_pstr_eq(s21_strrchr(sourceT, '\0'), strrchr(sourceT, '\0'));
+  ck_assert_pstr_eq(s21_strrchr(sourceT, ' '), strrchr(sourceT, ' '));
+  ck_assert_pstr_eq(s21_strrchr(sourceT, '\n'), strrchr(sourceT, '\n'));
+
+  char sourceY[] = "\0";
+  ck_assert_pstr_eq(s21_strrchr(sourceY, 1), strrchr(sourceY, 1));
+  ck_assert_pstr_eq(s21_strrchr(sourceY, '\0'), strrchr(sourceY, '\0'));
+}
+
+START_TEST(strncmp_test) {
+  char ex[] = "Jesse we need to cook";
+  char exOne[] = "Jesse we need to cock";
+
+  ck_assert_int_eq(s21_strncmp(ex, exOne, 22), strncmp(ex, exOne, 22));
+  ck_assert_int_eq(s21_strncmp(ex, exOne, 21), strncmp(ex, exOne, 21));
+  ck_assert_int_eq(s21_strncmp(ex, exOne, 10), strncmp(ex, exOne, 10));
+  ck_assert_int_eq(s21_strncmp(ex, exOne, 2), strncmp(ex, exOne, 2));
+
+  char exTwo[] = "abcdefg";
+  char exThree[] = "12345678";
+  ck_assert_int_eq(s21_strncmp(exTwo, exThree, 8), strncmp(exTwo, exThree, 8));
+  ck_assert_int_eq(s21_strncmp(exTwo, exThree, 2), strncmp(exTwo, exThree, 2));
+
+  char exFour[] = " \n\0";
+  char exFive[] = " \n\0";
+  ck_assert_int_eq(s21_strncmp(exFour, exFive, 4), strncmp(exFour, exFive, 4));
+
+  char exSix[] = "\0";
+  char exSeven[] = "\0";
+  ck_assert_int_eq(s21_strncmp(exSix, exSeven, 2), strncmp(exSix, exSeven, 2));
+  ck_assert_int_eq(s21_strncmp(exSix, exSeven, 1), strncmp(exSix, exSeven, 1));
+  ck_assert_int_eq(s21_strncmp(exSix, exSeven, 0), strncmp(exSix, exSeven, 0));
+}
+
+START_TEST(strcmp_test) {
+  char ex[] = "Jesse we need to cook";
+  char exOne[] = "Jesse we need to cock";
+
+  ck_assert_int_eq(s21_strcmp(ex, exOne), strcmp(ex, exOne));
+  ck_assert_int_eq(s21_strcmp(ex, exOne), strcmp(ex, exOne));
+  ck_assert_int_eq(s21_strcmp(ex, exOne), strcmp(ex, exOne));
+  ck_assert_int_eq(s21_strcmp(ex, exOne), strcmp(ex, exOne));
+
+  char r[] = "Identical one";
+  char r2[] = "Identical one";
+  ck_assert_int_eq(s21_strcmp(r, r2), strcmp(r, r2));
+
+  char exTwo[] = "abcdefg";
+  char exThree[] = "12345678";
+  ck_assert_int_eq(s21_strcmp(exTwo, exThree), strcmp(exTwo, exThree));
+  ck_assert_int_eq(s21_strcmp(exTwo, exThree), strcmp(exTwo, exThree));
+
+  char exFour[] = " \n\0";
+  char exFive[] = " \n\0";
+  ck_assert_int_eq(s21_strcmp(exFour, exFive), strcmp(exFour, exFive));
+
+  char exSix[] = "\0";
+  char exSeven[] = "\0";
+  ck_assert_int_eq(s21_strcmp(exSix, exSeven), strcmp(exSix, exSeven));
+  ck_assert_int_eq(s21_strcmp(exSix, exSeven), strcmp(exSix, exSeven));
+  ck_assert_int_eq(s21_strcmp(exSix, exSeven), strcmp(exSix, exSeven));
+}
+
+START_TEST(strncpy_test) {
+  char s[100] = "asdasdasdasd;c";
+  char sTwo[100] = "PatrickBateman\n\0";
+
+  char dOne[100] = "Sweet home Alabama\0";
+  char origOne[100] = "Sween home Alabama\0";
+
+  char dTwo[100] = {0};
+  char origTwo[100] = {0};
+
+  char dThree[100] = "1241241241241241212sdadas\n\0";
+  char origThree[100] = "1241241241241241212sdadas\n\0";
+
+  char dFour[100] = " \n\0";
+  char origFour[100] = " \n\0";
+
+  char dFive[100] = " \0";
+  char origFive[100] = " \0";
+
+  char dSix[100] = "Ominous\n\0";
+  char origSix[100] = "Ominous\n\0";
+
+  char dSeven[100] = "\n\0";
+  char origSeven[100] = "\n\0";
+
+  char dEight[100] = "Ominous music\0";
+  char origEight[100] = "Ominous music\0";
+
+  char r[] = "\0";
+  char r1[] = "\0";
+
+  ck_assert_str_eq(s21_strncpy(dOne, s, 14), strncpy(origOne, s, 14));
+  ck_assert_str_eq(s21_strncpy(dTwo, s, 7), strncpy(origTwo, s, 7));
+  ck_assert_str_eq(s21_strncpy(dTwo, s, 100), strncpy(origTwo, s, 100));
+  ck_assert_str_eq(s21_strncpy(dThree, s, 14), strncpy(origThree, s, 14));
+  ck_assert_str_eq(s21_strncpy(dFour, sTwo, 15), strncpy(origFour, sTwo, 15));
+  ck_assert_str_eq(s21_strncpy(dFive, sTwo, 15), strncpy(origFive, sTwo, 15));
+  ck_assert_str_eq(s21_strncpy(dSix, sTwo, 5), strncpy(origSix, sTwo, 5));
+  ck_assert_str_eq(s21_strncpy(dSeven, sTwo, 15), strncpy(origSeven, sTwo, 15));
+  ck_assert_str_eq(s21_strncpy(dEight, sTwo, 15), strncpy(origEight, sTwo, 15));
+  ck_assert_str_eq(s21_strncpy(r, r1, 2), strncpy(r, r1, 2));
+}
+
+START_TEST(strcpy_test) {
+  char s[100] = "asdasdasdasd;c";
+  char sTwo[100] = "PatrickBateman\n\0";
+
+  char dOne[100] = "Sweet home Alabama\0";
+  char origOne[100] = "Sween home Alabama\0";
+
+  char dTwo[100] = {0};
+  char origTwo[100] = {0};
+
+  char dThree[100] = "1241241241241241212sdadas\n\0";
+  char origThree[100] = "1241241241241241212sdadas\n\0";
+
+  char dFour[100] = " \n\0";
+  char origFour[100] = " \n\0";
+
+  char dFive[100] = " \0";
+  char origFive[100] = " \0";
+
+  char dSix[100] = "Ominous\n\0";
+  char origSix[100] = "Ominous\n\0";
+
+  char dSeven[100] = "\n\0";
+  char origSeven[100] = "\n\0";
+
+  char dEight[100] = "Ominous music\0";
+  char origEight[100] = "Ominous music\0";
+
+  char r[] = "\0";
+  char r1[] = "\0";
+
+  ck_assert_str_eq(s21_strcpy(dOne, s), strcpy(origOne, s));
+  ck_assert_str_eq(s21_strcpy(dTwo, s), strcpy(origTwo, s));
+  ck_assert_str_eq(s21_strcpy(dTwo, s), strcpy(origTwo, s));
+  ck_assert_str_eq(s21_strcpy(dThree, s), strcpy(origThree, s));
+  ck_assert_str_eq(s21_strcpy(dFour, sTwo), strcpy(origFour, sTwo));
+  ck_assert_str_eq(s21_strcpy(dFive, sTwo), strcpy(origFive, sTwo));
+  ck_assert_str_eq(s21_strcpy(dSix, sTwo), strcpy(origSix, sTwo));
+  ck_assert_str_eq(s21_strcpy(dSeven, sTwo), strcpy(origSeven, sTwo));
+  ck_assert_str_eq(s21_strcpy(dEight, sTwo), strcpy(origEight, sTwo));
+  ck_assert_str_eq(s21_strcpy(r, r1), strcpy(r, r1));
+}
+
+START_TEST(strcspn_test) {
+  char source[] = "Use a Tracer object. Something like this: class Tracer";
+  char comparison[] = "1234 \n\n\0 T\0";
+  ck_assert_uint_eq(s21_strcspn(source, comparison),
+                    strcspn(source, comparison));
+
+  char sourceTwo[] = " \n \0";
+  char comparisonTwo[] = "\0";
+
+  ck_assert_uint_eq(s21_strcspn(sourceTwo, comparisonTwo),
+                    strcspn(sourceTwo, comparisonTwo));
+
+  char sourceThree[] = "\0";
+  char comparisonThree[] = "\0";
+  ck_assert_uint_eq(s21_strcspn(sourceThree, comparisonThree),
+                    strcspn(sourceThree, comparisonThree));
+
+  char sourceFour[] = "Zhongli";
+  char doesntExist[] = "JesusChrist";
+  ck_assert_uint_eq(s21_strcspn(sourceFour, doesntExist),
+                    strcspn(sourceFour, doesntExist));
+}
+
+// START_TEST(strerror_test) {
+
+// }
+
+START_TEST(strlen_test) {
+  char s[100] = "asdasdasdasd;c";
+  char ass[100] = "asdasdasdasd;c";
+
+  ck_assert_uint_eq(s21_strlen(s), strlen(ass));
+
+  char sTwo[100] = "PatrickBateman\n\0";
+  char assTwo[100] = "PatrickBateman\n\0";
+
+  ck_assert_uint_eq(s21_strlen(sTwo), strlen(assTwo));
+
+  char dOne[100] = "Sweet home Alabama\0";
+  char origOne[100] = "Sween home Alabama\0";
+
+  ck_assert_uint_eq(s21_strlen(dOne), strlen(origOne));
+
+  char dTwo[100] = {0};
+  char origTwo[100] = {0};
+
+  ck_assert_uint_eq(s21_strlen(dTwo), strlen(origTwo));
+
+  char dThree[100] = "1241241241241241212sdadas\n\0";
+  char origThree[100] = "1241241241241241212sdadas\n\0";
+
+  ck_assert_uint_eq(s21_strlen(dThree), strlen(origThree));
+
+  char dFour[100] = " \n\0";
+  char origFour[100] = " \n\0";
+
+  ck_assert_uint_eq(s21_strlen(dFour), strlen(origFour));
+
+  char dFive[100] = " \0";
+  char origFive[100] = " \0";
+
+  ck_assert_uint_eq(s21_strlen(dFive), strlen(origFive));
+
+  char dSix[100] = "Ominous\n\0";
+  char origSix[100] = "Ominous\n\0";
+
+  ck_assert_uint_eq(s21_strlen(dSix), strlen(origSix));
+
+  char dSeven[100] = "\n\0";
+  char origSeven[100] = "\n\0";
+
+  ck_assert_uint_eq(s21_strlen(dSeven), strlen(origSeven));
+
+  char dEight[100] = "Ominous music\0";
+  char origEight[100] = "Ominous music\0";
+
+  ck_assert_uint_eq(s21_strlen(dEight), strlen(origEight));
+}
+
+START_TEST(strpbrk_test) {}
 
 int main() {
   // runner init
@@ -356,47 +621,107 @@ int main() {
   Suite *s = suite_create("StrT");
   SRunner *runner = srunner_create(s);
 
-  // memchr
+  // 1 - memchr
   TCase *tc_memchr;
   tc_memchr = tcase_create("memchr test");
   suite_add_tcase(s, tc_memchr);
   tcase_add_test(tc_memchr, memchr_test);
 
-  // memcpy
+  // 2 - memcpy
   TCase *tc_memcpy;
   tc_memcpy = tcase_create("memcpy test");
   suite_add_tcase(s, tc_memcpy);
   tcase_add_test(tc_memcpy, memcpy_test);
 
-  // memcmp
+  // 3 - memcmp
   TCase *tc_memcmp;
   tc_memcmp = tcase_create("memcmp test");
   suite_add_tcase(s, tc_memcmp);
   tcase_add_test(tc_memcmp, memcmp_test);
 
-  // memmove
+  // 4 - memmove
   TCase *tc_memmove;
   tc_memmove = tcase_create("memmove test");
   suite_add_tcase(s, tc_memmove);
   tcase_add_test(tc_memmove, memmove_test);
 
-  // memset
+  // 5 - memset
   TCase *tc_memset;
   tc_memset = tcase_create("memset test");
   suite_add_tcase(s, tc_memset);
   tcase_add_test(tc_memset, memset_test);
 
-  // strcat
+  // 6 - strcat
   TCase *tc_strcat;
   tc_strcat = tcase_create("strcat test");
   suite_add_tcase(s, tc_strcat);
   tcase_add_test(tc_strcat, strcat_test);
 
-  // strncat
+  // 7 - strncat
   TCase *tc_strncat;
   tc_strncat = tcase_create("strncat test");
   suite_add_tcase(s, tc_strncat);
   tcase_add_test(tc_strncat, strncat_test);
+
+  // 8 - strchr
+  TCase *tc_strchr;
+  tc_strchr = tcase_create("strchr test");
+  suite_add_tcase(s, tc_strchr);
+  tcase_add_test(tc_strchr, strchr_test);
+
+  // 9 - strrchr
+  TCase *tc_strrchr;
+  tc_strrchr = tcase_create("strrchr test");
+  suite_add_tcase(s, tc_strrchr);
+  tcase_add_test(tc_strrchr, strrchr_test);
+
+  // 10 - strcmp
+  TCase *tc_strcmp;
+  tc_strcmp = tcase_create("strcmp test");
+  suite_add_tcase(s, tc_strcmp);
+  tcase_add_test(tc_strcmp, strcmp_test);
+
+  // 11 - strncmp
+  TCase *tc_strncmp;
+  tc_strncmp = tcase_create("strncmp test");
+  suite_add_tcase(s, tc_strncmp);
+  tcase_add_test(tc_strncmp, strncmp_test);
+
+  // 12 - strncpy
+  TCase *tc_strncpy;
+  tc_strncpy = tcase_create("strncpy test");
+  suite_add_tcase(s, tc_strncpy);
+  tcase_add_test(tc_strncpy, strncpy_test);
+
+  // 13 - strcpy
+  TCase *tc_strcpy;
+  tc_strcpy = tcase_create("strcpy test");
+  suite_add_tcase(s, tc_strcpy);
+  tcase_add_test(tc_strcpy, strcpy_test);
+
+  // 14 - strcspn
+  TCase *tc_strcspn;
+  tc_strcspn = tcase_create("strcspn test");
+  suite_add_tcase(s, tc_strcspn);
+  tcase_add_test(tc_strcspn, strcspn_test);
+
+  // // 15 - strerror
+  // TCase *tc_strerror;
+  // tc_strerror = tcase_create("strerror test");
+  // suite_add_tcase(s, tc_strerror);
+  // tcase_add_test(tc_strerror, strerror_test);
+
+  // 16 - strlen
+  TCase *tc_strlen;
+  tc_strlen = tcase_create("strlen test");
+  suite_add_tcase(s, tc_strlen);
+  tcase_add_test(tc_strlen, strlen_test);
+
+  // 17 - strpbrk
+  TCase *tc_strpbrk;
+  tc_strpbrk = tcase_create("strpbrk test");
+  suite_add_tcase(s, tc_strpbrk);
+  tcase_add_test(tc_strpbrk, strpbrk_test);
 
   // runner
   srunner_run_all(runner, CK_VERBOSE);
