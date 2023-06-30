@@ -615,6 +615,24 @@ START_TEST(strlen_test) {
 
 START_TEST(strpbrk_test) {}
 
+START_TEST(strspn_test) {
+  char sOne[10] = "alabama123";
+  char dOne[10] = "45678910";
+  char dTwo[10] = "sweet home";
+
+  char r[] = "ee";
+  ck_assert_uint_eq(s21_strspn(sOne, r), strspn(sOne, r));
+  ck_assert_uint_eq(s21_strspn(dOne, r), strspn(dOne, r));
+  ck_assert_uint_eq(s21_strspn(dTwo, r), strspn(dTwo, r));
+
+  char dFive[100] = " \0";
+  char dSeven[100] = "\n\0";
+  char t[] = "\0";
+
+  ck_assert_uint_eq(s21_strspn(dFive, t), strspn(dFive, t));
+  ck_assert_uint_eq(s21_strspn(dSeven, t), strspn(dSeven, t));
+}
+
 int main() {
   // runner init
   int no_failed = 0;
@@ -699,7 +717,7 @@ int main() {
   suite_add_tcase(s, tc_strcpy);
   tcase_add_test(tc_strcpy, strcpy_test);
 
-  // 14 - strcspn
+  // 14 - strcspn LOOK INTO 18 TOO
   TCase *tc_strcspn;
   tc_strcspn = tcase_create("strcspn test");
   suite_add_tcase(s, tc_strcspn);
@@ -722,6 +740,12 @@ int main() {
   tc_strpbrk = tcase_create("strpbrk test");
   suite_add_tcase(s, tc_strpbrk);
   tcase_add_test(tc_strpbrk, strpbrk_test);
+
+  // 18 - strspn LOOK INTO 14 TOO
+  TCase *tc_strspn;
+  tc_strspn = tcase_create("strspn test");
+  suite_add_tcase(s, tc_strspn);
+  tcase_add_test(tc_strspn, strspn_test);
 
   // runner
   srunner_run_all(runner, CK_VERBOSE);
