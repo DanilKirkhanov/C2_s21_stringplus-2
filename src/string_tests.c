@@ -558,7 +558,12 @@ START_TEST(strcspn_test) {
 }
 
 // START_TEST(strerror_test) {
+// char *src, *src1;
+// src = s21_strerror(1);
+// ck_assert_pstr_eq(src, strerror(1));
 
+// src1 = s21_strerror(70);
+// ck_assert_pstr_eq(src1, strerror(70));
 // }
 
 START_TEST(strlen_test) {
@@ -613,7 +618,18 @@ START_TEST(strlen_test) {
   ck_assert_uint_eq(s21_strlen(dEight), strlen(origEight));
 }
 
-START_TEST(strpbrk_test) {}
+START_TEST(strpbrk_test) {
+  char str1[16] = "Very weak human";
+  char str2[8] = "Arseniy";
+
+  ck_assert_pstr_eq(s21_strpbrk(str1, str2), strpbrk(str1, str2));
+  ck_assert_pstr_eq(s21_strpbrk("", str2), strpbrk("", str2));
+  ck_assert_pstr_eq(s21_strpbrk(str1, str1), strpbrk(str1, str1));
+
+  char str3[] = "Hello Moto\n\0";
+  char str4[] = "\n\0";
+  ck_assert_pstr_eq(s21_strpbrk(str3, str4), strpbrk(str3, str4));
+}
 
 START_TEST(strspn_test) {
   char sOne[10] = "alabama123";
@@ -631,6 +647,71 @@ START_TEST(strspn_test) {
 
   ck_assert_uint_eq(s21_strspn(dFive, t), strspn(dFive, t));
   ck_assert_uint_eq(s21_strspn(dSeven, t), strspn(dSeven, t));
+}
+
+START_TEST(strstr_test) {
+  // char sOne[10] = "HELLO";
+  // char dOne[10] = "Hello";
+  // ck_assert_str_eq(s21_strstr(sOne, dOne), strstr(sOne, dOne));
+
+  char sTwo[50] = "The first string for testing";
+  char dTwo[50] = "test";
+  ck_assert_str_eq(s21_strstr(sTwo, dTwo), strstr(sTwo, dTwo));
+
+  char sThree[50] = "1241613413";
+  char dThree[50] = "41";
+  ck_assert_str_eq(s21_strstr(sThree, dThree), strstr(sThree, dThree));
+
+  char dFour[100] = "Alabama \n\0";
+  char origFour[100] = " \n\0";
+  ck_assert_str_eq(s21_strstr(dFour, origFour), strstr(dFour, origFour));
+
+  char dFive[100] = "Shrek \0";
+  char origFive[100] = " \0";
+  ck_assert_str_eq(s21_strstr(dFive, origFive), strstr(dFive, origFive));
+
+  char dSix[100] = "Ominous\n\0";
+  char origSix[100] = "us\n";
+  ck_assert_str_eq(s21_strstr(dSix, origSix), strstr(dSix, origSix));
+
+  char str6[] = "\n\0";
+  char str7[] = "\0";
+
+  ck_assert_ptr_eq(s21_strstr(str6, str7), strstr(str6, str7));
+}
+
+START_TEST(strtok_test) {
+  char t[100] = "Hi, my name is Van, I'm an artist.\0";
+  char sep[] = ",";
+  ck_assert_pstr_eq(s21_strtok(t, sep), strtok(t, sep));
+
+  char t2[700] =
+      "♂Dungeon♂Master♂ now with a full dungeon in my house and It's going "
+      "really well. ";
+  char sep2[] = "♂";
+  ck_assert_pstr_eq(s21_strtok(t2, sep2), strtok(t2, sep2));
+
+  char t3[100] = "asdasdasdasd;c";
+  char sep3[] = ";";
+  ck_assert_pstr_eq(s21_strtok(t3, sep3), strtok(t3, sep3));
+
+  char t4[100] = "1241241241241241212sdadas\n\0";
+  char sep4[] = "\n";
+  char sep0[] = "o";
+  ck_assert_pstr_eq(s21_strtok(t4, sep4), strtok(t4, sep4));
+  ck_assert_pstr_eq(s21_strtok(t4, sep0), strtok(t4, sep0));
+
+  char t5[] = "JesusChrist";
+  char sep5[] = "C";
+  ck_assert_pstr_eq(s21_strtok(t5, sep5), strtok(t5, sep5));
+
+  char t6[100] = "Ominous\n\0";
+  char sep6[] = "\0";
+  ck_assert_pstr_eq(s21_strtok(t6, sep6), strtok(t6, sep6));
+
+  char t7[100] = "Ominous music\0";
+  char sep7[] = " ";
+  ck_assert_pstr_eq(s21_strtok(t7, sep7), strtok(t7, sep7));
 }
 
 int main() {
@@ -746,6 +827,18 @@ int main() {
   tc_strspn = tcase_create("strspn test");
   suite_add_tcase(s, tc_strspn);
   tcase_add_test(tc_strspn, strspn_test);
+
+  // 19 - strstr
+  TCase *tc_strstr;
+  tc_strstr = tcase_create("strstr test");
+  suite_add_tcase(s, tc_strstr);
+  tcase_add_test(tc_strstr, strstr_test);
+
+  // 20 - strtok
+  TCase *tc_strtok;
+  tc_strtok = tcase_create("strtok test");
+  suite_add_tcase(s, tc_strtok);
+  tcase_add_test(tc_strtok, strtok_test);
 
   // runner
   srunner_run_all(runner, CK_VERBOSE);
