@@ -3,6 +3,7 @@
 #include <wchar.h>
 
 #include "s21_string.h"
+// #include "s21_sscanf.h"
 
 START_TEST(memchr_test) {
   char testOne[15] = "Patrick Bateman";
@@ -714,6 +715,197 @@ START_TEST(strtok_test) {
   ck_assert_pstr_eq(s21_strtok(t7, sep7), strtok(t7, sep7));
 }
 
+START_TEST(insert_test) {
+    char* buffer;
+
+    buffer = s21_insert("40", "2", 1);
+    ck_assert_pstr_eq(buffer, "420");
+    free(buffer);
+
+    buffer = s21_insert("Van", " Darkholme", 3);
+    ck_assert_pstr_eq(buffer, "Van Darkholme");
+    free(buffer);
+
+    buffer = s21_insert("", "9", 2);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert("hello", "", 0);
+    ck_assert_pstr_eq(buffer, "hello");
+    free(buffer);
+
+    buffer = s21_insert("hello", "", 2);
+    ck_assert_pstr_eq(buffer, "hello");
+    free(buffer);
+
+    buffer = s21_insert("hello", "", 6);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert("", "", 6);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert("al", "la\0", 2);
+    ck_assert_pstr_eq(buffer, "alla\0");
+    free(buffer);
+
+    buffer = s21_insert(S21_NULL, "", 0);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert("", S21_NULL, 0);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert(" 67", S21_NULL, 0);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert(S21_NULL, "67 ", 0);
+    ck_assert_ptr_null(buffer);
+    free(buffer);
+
+    buffer = s21_insert("Anny are you okay, Anny!?", "are you ok ", 19);
+    ck_assert_pstr_eq(buffer, "Anny are you okay, are you ok Anny!?");
+    free(buffer);
+}
+
+START_TEST(to_lower_test) {
+  char* buffer;
+
+  buffer = s21_to_lower("Van Darkholme\0");
+  ck_assert_pstr_eq(buffer, "van darkholme\0");
+  free(buffer);
+
+  buffer = s21_to_lower("WELL HELLO THERE");
+  ck_assert_pstr_eq(buffer, "well hello there");
+  free(buffer);
+
+  buffer = s21_to_lower("AK15l00\n\nadILq601-\0");
+  ck_assert_pstr_eq(buffer, "ak15l00\n\nadilq601-\0");
+  free(buffer);
+
+  buffer = s21_to_lower("1241");
+  ck_assert_pstr_eq(buffer, "1241");
+  free(buffer);
+
+  buffer = s21_to_lower("");
+  ck_assert_pstr_eq(buffer, "");
+  free(buffer);
+
+  buffer = s21_to_lower("\0");
+  ck_assert_pstr_eq(buffer, "");
+  free(buffer);
+
+  buffer = s21_to_lower(" \n\0");
+  ck_assert_pstr_eq(buffer, " \n");
+
+  buffer = s21_to_lower(S21_NULL);
+  ck_assert_pstr_eq(buffer, S21_NULL);
+  free(buffer);
+}
+
+START_TEST(to_upper_test) {
+  char* buffer;
+
+  buffer = s21_to_upper("Van Darkholme\0");
+  ck_assert_pstr_eq(buffer, "VAN DARKHOLME\0");
+  free(buffer);
+
+  buffer = s21_to_upper("well hello there");
+  ck_assert_pstr_eq(buffer, "WELL HELLO THERE");
+  free(buffer);
+
+  buffer = s21_to_upper("AK15l00\n\nadILq601-\0");
+  ck_assert_pstr_eq(buffer, "AK15L00\n\nADILQ601-\0");
+  free(buffer);
+
+  buffer = s21_to_upper("1241");
+  ck_assert_pstr_eq(buffer, "1241");
+  free(buffer);
+
+  buffer = s21_to_upper("");
+  ck_assert_pstr_eq(buffer, "");
+  free(buffer);
+
+  buffer = s21_to_upper("\0");
+  ck_assert_pstr_eq(buffer, "");
+  free(buffer);
+
+  buffer = s21_to_upper(" \n\0");
+  ck_assert_pstr_eq(buffer, " \n");
+  free(buffer);
+
+  buffer = s21_to_upper(S21_NULL);
+  ck_assert_pstr_eq(buffer, S21_NULL);
+  free(buffer);
+}
+
+START_TEST(trim_test) {
+  char* buffer;
+
+  buffer = s21_trim("Van Darkholmep", "p");
+  ck_assert_str_eq(buffer, "Van Darkholme");
+  free(buffer);
+
+  buffer = s21_trim("*Van Darkholme*", "*");
+  ck_assert_str_eq(buffer, "Van Darkholme");
+  free(buffer);
+
+  buffer = s21_trim(" ", " ");
+  ck_assert_str_eq(buffer, "");
+  free(buffer);
+}
+
+// POINT OF NO RETURN
+// ** ** SSCANF ** **
+
+START_TEST(sscanf_d) {
+  int d1 = 0, d2 = 0, d3 = 0, d4 = 0, res1 = 0, res2 = 0;
+  short int d7 = 0, d8 = 0, d9 = 0, d10 = 0;
+  long int d11 = 0, d12 = 0, d13 = 0, d14 = 0;
+
+  //  test %d
+  res1 = s21_sscanf("0123 456 789", "%d %*d %002d", &d1, &d2);
+  res2 = sscanf("0123 456 789", "%d %*d %002d", &d3, &d4);
+  printf("%d\n%d\n", res1, res2);
+  ck_assert_int_eq(res1, res2); ck_assert_int_eq(d1, d3); ck_assert_int_eq(d2, d4);
+
+  // short int
+  res1 = s21_sscanf("12 +123", "%hd %3hd", &d7, &d9);
+  res2 = sscanf("12 +123", "%hd %3hd", &d8, &d10);
+  ck_assert_int_eq(d7, d8);
+  ck_assert_int_eq(d9, d10);
+  ck_assert_int_eq(res1, res2);
+
+  // long int
+  res1 = s21_sscanf("123456678 +1231234567", "%ld %8ld", &d11, &d13);
+  res2 = sscanf("123456678 +1231234567", "%ld %8ld", &d12, &d14);
+  ck_assert_int_eq(d11, d12);
+  ck_assert_int_eq(d13, d14);
+  ck_assert_int_eq(res1, res2);
+}
+
+START_TEST(sscanf_c) {
+    char fstr[] = "%c %c %c %c";
+    char str[] = "   a     b c d";
+    int16_t a1 = 0, a2 = 5, b1 = 0, b2 = 5, c1 = 0, c2 = 5, d1 = 0, d2 = 5;
+
+    int16_t res1 = s21_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+
+    int16_t res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+    ck_assert_int_eq(res1, res2);
+    ck_assert_int_eq(a1, a2);
+    ck_assert_int_eq(b1, b2);
+    ck_assert_int_eq(c1, c2);
+    ck_assert_int_eq(d1, d2);
+}
+END_TEST
+
+
+
 int main() {
   // runner init
   int no_failed = 0;
@@ -839,6 +1031,47 @@ int main() {
   tc_strtok = tcase_create("strtok test");
   suite_add_tcase(s, tc_strtok);
   tcase_add_test(tc_strtok, strtok_test);
+
+  // 21 - insert
+  TCase *tc_insert;
+  tc_insert = tcase_create("insert test");
+  suite_add_tcase(s, tc_insert);
+  tcase_add_test(tc_insert, insert_test);
+
+  // 22 - to_lower
+  TCase *tc_to_lower;
+  tc_to_lower = tcase_create("to_lower test");
+  suite_add_tcase(s, tc_to_lower);
+  tcase_add_test(tc_to_lower, to_lower_test);
+
+  // 23 - to_upper
+  TCase *tc_to_upper;
+  tc_to_upper = tcase_create("to_upper test");
+  suite_add_tcase(s, tc_to_upper);
+  tcase_add_test(tc_to_upper, to_upper_test);
+
+  // 24 - trim
+  TCase *tc_trim;
+  tc_trim = tcase_create("trim test");
+  suite_add_tcase(s, tc_trim);
+  tcase_add_test(tc_trim, trim_test);
+
+  // POINT OF NO RETURN
+
+  // ** ** SSCANF ** **
+  // 1 - sscanf - d
+
+  TCase *tc_sscanf_d;
+  tc_sscanf_d = tcase_create("sscanf d test");
+  suite_add_tcase(s, tc_sscanf_d);
+  tcase_add_test(tc_sscanf_d, sscanf_d);
+
+  // 2 - sscanf - c
+  TCase *tc_sscanf;
+  tc_sscanf = tcase_create("sscanf c test");
+  suite_add_tcase(s, tc_sscanf);
+  tcase_add_test(tc_sscanf, sscanf_c);
+
 
   // runner
   srunner_run_all(runner, CK_VERBOSE);

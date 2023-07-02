@@ -1,8 +1,9 @@
 #ifndef S21_STRING
 #define S21_STRING
 #include <stdlib.h>
+#include <stdarg.h>
 #define S21_NULL ((void *)0)
-typedef unsigned long s21_size_t;
+typedef unsigned long int s21_size_t;
 void *s21_memchr(const void *str, int c, s21_size_t n);            // ok
 void *s21_memcpy(void *dest, const void *src, s21_size_t n);       // ok
 void *s21_memset(void *str, int c, s21_size_t n);                  // ok
@@ -29,5 +30,31 @@ void *s21_insert(const char *src, const char *str, s21_size_t start_index);
 void *s21_trim(const char *src, const char *trim_chars);
 void *s21_to_upper(const char *string);
 void *s21_to_lower(const char *string);
+int s21_sscanf(const char *str, const char *format, ...);
+
+typedef struct TypeFormat {
+    int specificator;
+    int weight;
+    int weight_number;
+    int weight_star;
+    int length;
+    int length_h;
+    int length_l;
+    int length_L;
+    int precent;
+} TypeFormat;
+
+void setTypeFormat(TypeFormat *typeFormat, const char *format);
+int parsingForme(char *str, TypeFormat *typeFormat, va_list args,const char *format, char *full_form);
+void parse_specif(TypeFormat *typeFormat, char *str, char *buffered, const char *format, char *full_format, va_list args);
+void parse_length(TypeFormat *typeFormat, const char *str, const char *format, char *full_form, va_list args);
+void parse_weight(const char *buffered, char *format);
+char *parse_weight_star(TypeFormat *typeFormat, char *point_str);
+long long int parseDigit(TypeFormat *typeFormat, const char *str, char *buffered, char *format, char *full_form);
+long double parseFloatPoint(const char *str, char *buffered);
+s21_size_t parseAddress(char* str);
+long long int getHex(char *point_buf, int digit, unsigned long long int summa, int part_ten);
+long long int getEight(char *point_buf, int digit, unsigned long long int summa, int part_ten);
+void isEinPoint(char *point_str, int *number_pow, int *flag_e);
 
 #endif  // S21_STRING
