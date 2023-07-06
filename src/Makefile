@@ -65,7 +65,9 @@ s21_string.a: ${SOURCE}
 	ar rcs $@ $(OBJECTS)
 	ranlib s21_string.a
 	-rm -rf *.o
-
+main: s21_string.a
+	gcc $(LDFLAGS) main_test.c s21_string.a -o main.out -lcheck -lm
+	./main.out
 test: clean s21_string.a
 	gcc $(LDFLAGS) -o test string_tests.c s21_string.a $(ADD_LIB) -lcheck
 	./test

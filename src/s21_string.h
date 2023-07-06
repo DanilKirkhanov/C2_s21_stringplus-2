@@ -59,7 +59,14 @@ typedef struct TypeFormat {
 void set_flags(TypeFormat *typeFormat, char format);
 char *parse_star(char *str);
 int parse_form(TypeFormat *typeFormat, char *str, va_list args, char *full_form);
-long long int parse_digit(TypeFormat *format, char *str, char *full_form);
+int parse_length(TypeFormat *typeFormat, const char *str, const char *format, char *full_form, va_list args);
+long long int *parse_digit(TypeFormat *typeFormat, char *str, char *full_form);
 void parse_weight(char *str, char *full_form);
+void is_ein_point(char *str, int *number_pow, int *flag_e);
+long double parse_float_point(TypeFormat *typeFormat, const char* str, char* buffered, char *full_form);
+s21_size_t parse_address(char* str);
+int parse_n (char *full_form, va_list args);
+long long int getHex(char* point_buf, int part_ten);
+long long int getEight(char* point_buf, int part_ten);
 
 #endif  // S21_STRING
