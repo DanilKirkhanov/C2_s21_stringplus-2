@@ -867,8 +867,10 @@ START_TEST(sscanf_d) {
   long int d11 = 0, d12 = 0, d13 = 0, d14 = 0;
 
   //  test %d
-  res1 = s21_sscanf("0123 456 789", "%d %*d %002d", &d1, &d2);
+  res1 = s21_sscanf("123 456 789", "%d %*d %002d", &d1, &d2);
   res2 = sscanf("0123 456 789", "%d %*d %002d", &d3, &d4);
+  printf("S21:%d : %d\n", d1, d2);
+  printf("STR:%d : %d\n", d3, d4);
   printf("%d\n%d\n", res1, res2);
   ck_assert_int_eq(res1, res2); ck_assert_int_eq(d1, d3); ck_assert_int_eq(d2, d4);
 

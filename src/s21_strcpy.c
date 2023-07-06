@@ -1,4 +1,5 @@
 #include "s21_string.h"
+#include <stdio.h>
 char *s21_strcpy(char *dest, const char *src) {
   char *point_dest = dest;
   unsigned char *point_src = (unsigned char *)src;
