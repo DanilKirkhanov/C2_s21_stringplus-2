@@ -81,18 +81,10 @@ START_TEST(strtok_10) {
 }
 END_TEST
 
-// START_TEST(strtok_11) {
-//   char *s1 = S21_NULL;
-//   char *s2 = S21_NULL;
-//   char s3[] = "";
-//   ck_assert_pstr_eq(strtok(s1, s3), s21_strtok(s2, s3));
-// }
-// END_TEST
-
 START_TEST(strtok_11) {
-  char s1[] = "tuz-tuz-tuz";
-  char s2[] = "tuz-tuz-tuz";
-  char s3[] = "z-tuz-tuz";
+  char *s1 = S21_NULL;
+  char *s2 = S21_NULL;
+  char s3[] = "";
   ck_assert_pstr_eq(strtok(s1, s3), s21_strtok(s2, s3));
 }
 END_TEST
