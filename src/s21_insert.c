@@ -1,6 +1,6 @@
 #include "s21_string.h"
 
-  void* s21_insert(const char* src, const char* str, s21_size_t start_index) {
+void* s21_insert(const char* src, const char* str, s21_size_t start_index) {
   char* result = S21_NULL;
   if (src == S21_NULL || str == S21_NULL || start_index > s21_strlen(src))
     result = S21_NULL;

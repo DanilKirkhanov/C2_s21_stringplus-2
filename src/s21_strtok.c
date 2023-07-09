@@ -4,14 +4,11 @@ char* s21_strtok(char* str, const char* delimiters) {
   static char* token = S21_NULL;
   static char* nextToken = S21_NULL;
   if (str != S21_NULL) {
-    token = str;
     nextToken = str;
-  } else {
-    if (nextToken == S21_NULL) {
-      return S21_NULL;
-    }
-    token = nextToken;
+  } else if (nextToken == S21_NULL) {
+    return S21_NULL;
   }
+  token = nextToken;
   if (*token == '\0') {
     return S21_NULL;
   }
